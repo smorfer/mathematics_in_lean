@@ -62,7 +62,7 @@ example : min (min a b) c = min a (min b c) := by
       . apply le_min
         . apply (h₀ _ _ _ (min_le_right _ _))
         . apply min_le_right
-      . exact (h₀ (min x y) z x (min_le_left x y))
+      . exact (h₀ _ _ _ (min_le_left _ _))
     . apply le_min
       . apply le_min
         . apply min_le_right
@@ -70,30 +70,6 @@ example : min (min a b) c = min a (min b c) := by
       . exact (h₀ _ _ _ (min_le_right _ _))
 
 
-example : min (min a b) c = min a (min b c) := by
-  have h₀ : ∀ a b c : ℝ, (a ≤ c) → min a b ≤ c := by
-    intro a₁ b₁ c₁ h
-    exact le_trans (min_le_left a₁ b₁) (h)
-  have h₁ : ∀ a b c : ℝ, (b ≤ c) → min a b ≤ c := by
-    intro a₁ b₁ c₁ h
-    exact le_trans (min_le_right a₁ b₁) h
-  apply le_antisymm
-  . apply le_min
-    . apply h₀
-      apply min_le_left
-    . apply le_min
-      . apply h₀
-        apply min_le_right
-      . apply h₁
-        rfl
-  . apply le_min
-    . apply le_min
-      . apply h₀
-        rfl
-      . apply h₁
-        apply min_le_left
-    . apply h₁
-      apply min_le_right
 
 theorem aux : min a b + c ≤ min (a + c) (b + c) := by
   sorry

@@ -39,9 +39,62 @@ example : min a b = min b a := by
     apply min_le_left
 
 example : max a b = max b a := by
-  sorry
+  apply le_antisymm
+  repeat
+    apply max_le
+    . apply le_max_right
+    . apply le_max_left
+
+example : min a b = min b a := by
+  apply?
+
 example : min (min a b) c = min a (min b c) := by
-  sorry
+  have h₀ : ∀ a b c : ℝ, (a ≤ c) → min a b ≤ c := by
+    intro a₁ b₁ c₁ h
+    exact le_trans (min_le_left a₁ b₁) (h)
+  have h₁ : ∀ a b c : ℝ, (b ≤ c) → min a b ≤ c := by
+    intro a₁ b₁ c₁ h
+    exact le_trans (min_le_right a₁ b₁) h
+  have h: ∀ x y z : ℝ, min (min x y) z = min (min y z) x := by
+    intro x y z
+    apply le_antisymm
+    . apply le_min
+      . apply le_min
+        . apply (h₀ _ _ _ (min_le_right _ _))
+        . apply min_le_right
+      . exact (h₀ (min x y) z x (min_le_left x y))
+    . apply le_min
+      . apply le_min
+        . apply min_le_right
+        . exact (h₀ _ _ _ (min_le_left _ _))
+      . exact (h₀ _ _ _ (min_le_right _ _))
+
+
+example : min (min a b) c = min a (min b c) := by
+  have h₀ : ∀ a b c : ℝ, (a ≤ c) → min a b ≤ c := by
+    intro a₁ b₁ c₁ h
+    exact le_trans (min_le_left a₁ b₁) (h)
+  have h₁ : ∀ a b c : ℝ, (b ≤ c) → min a b ≤ c := by
+    intro a₁ b₁ c₁ h
+    exact le_trans (min_le_right a₁ b₁) h
+  apply le_antisymm
+  . apply le_min
+    . apply h₀
+      apply min_le_left
+    . apply le_min
+      . apply h₀
+        apply min_le_right
+      . apply h₁
+        rfl
+  . apply le_min
+    . apply le_min
+      . apply h₀
+        rfl
+      . apply h₁
+        apply min_le_left
+    . apply h₁
+      apply min_le_right
+
 theorem aux : min a b + c ≤ min (a + c) (b + c) := by
   sorry
 example : min a b + c = min (a + c) (b + c) := by
@@ -80,5 +133,3 @@ variable (m n : ℕ)
 example : Nat.gcd m n = Nat.gcd n m := by
   sorry
 end
-
-

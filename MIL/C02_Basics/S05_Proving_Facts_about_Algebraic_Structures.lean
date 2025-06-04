@@ -78,14 +78,37 @@ example : x ⊔ y ⊔ z = x ⊔ (y ⊔ z) := by
   . apply sup_le
     . apply sup_le
       . apply le_sup_left
-      . apply le_trans
-        . apply le_sup_left
+      . calc
+          y ≤ y ⊔ z := by apply le_sup_left
+          _ ≤ x ⊔ (y ⊔ z) := by apply le_sup_right
+    . calc
+        z ≤ y ⊔ z := by apply le_sup_right
+        _ ≤ x ⊔ (y ⊔ z) := by apply le_sup_right
+  . apply sup_le
+    . calc
+        x ≤ x ⊔ y := by apply le_sup_left
+        _ ≤ x ⊔ y ⊔ z := by apply le_sup_left
+    . apply sup_le
+      . calc
+          y ≤ x ⊔ y := by apply le_sup_right
+          _ ≤ x ⊔ y ⊔ z := by apply le_sup_left
+      . apply le_sup_right
+
 
 theorem absorb1 : x ⊓ (x ⊔ y) = x := by
-  sorry
+  apply le_antisymm
+  . apply inf_le_left
+  . apply le_inf
+    . apply le_refl
+    . apply le_sup_left
+
 
 theorem absorb2 : x ⊔ x ⊓ y = x := by
-  sorry
+  apply le_antisymm
+  . apply sup_le
+    . apply le_refl
+    . apply inf_le_left
+  . apply @inf_comm (x ⊓ x)
 
 end
 

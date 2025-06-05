@@ -108,7 +108,12 @@ theorem absorb2 : x ⊔ x ⊓ y = x := by
   . apply sup_le
     . apply le_refl
     . apply inf_le_left
-  . apply @inf_comm (x ⊓ x)
+  . calc
+      x ≤ x ⊔ x := by exact le_sup_left
+      _ ≤ _ := by
+        apply le_inf
+        .
+
 
 end
 
